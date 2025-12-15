@@ -1,0 +1,20 @@
+# Jupyter
+.ipynb_checkpoints/
+
+# Dataset (OULAD)
+open+university+learning+analytics+dataset/
+*.csv
+*.zip
+
+# Editor / system files
+.virtual_documents/
+.DS_Store
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+env/
