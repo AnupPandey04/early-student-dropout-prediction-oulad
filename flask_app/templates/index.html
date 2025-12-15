@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Early Student Dropout Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- ===================== -->
+<!-- SECTION 1: PREDICTION -->
+<!-- ===================== -->
+
+<h1>Early Student Dropout Prediction</h1>
+
+<p>
+This tool predicts <strong>dropout risk for a new student</strong> using
+early LMS engagement data from the <strong>first 4 weeks</strong>.
+</p>
+
+<form method="POST" action="/predict">
+
+    <h3>Student Information</h3>
+
+    Gender:
+    <select name="gender" required>
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+    </select><br><br>
+
+    Age Band:
+    <select name="age_band" required>
+        <option value="0-35">0-35</option>
+        <option value="35-55">35-55</option>
+        <option value="55<=">55+</option>
+    </select><br><br>
+
+    Highest Education:
+    <select name="highest_education" required>
+        <option value="HE Qualification">HE Qualification</option>
+        <option value="A Level or Equivalent">A Level or Equivalent</option>
+        <option value="Lower Than A Level">Lower Than A Level</option>
+    </select><br><br>
+
+    Disability:
+    <select name="disability" required>
+        <option value="N">No</option>
+        <option value="Y">Yes</option>
+    </select><br><br>
+
+    <h3>Early LMS Activity (First 4 Weeks)</h3>
+
+    Total Clicks:
+    <input type="number" name="total_clicks" min="0" required><br><br>
+
+    Active Days:
+    <input type="number" name="active_days" min="0" required><br><br>
+
+    Unique Activities:
+    <input type="number" name="unique_activities" min="0" required><br><br>
+
+    Avg Clicks per Day:
+    <input type="number" step="0.1" name="avg_clicks_per_day" min="0" required><br><br>
+
+    <button type="submit">Predict Dropout Risk</button>
+</form>
+
+{% if prediction is not none %}
+<div class="result {% if risk_level == 'High' %}high{% elif risk_level == 'Medium' %}medium{% else %}low{% endif %}">
+    <h3>Prediction Result</h3>
+    <p><strong>Dropout Probability:</strong> {{ prediction }}</p>
+    <p><strong>Risk Level:</strong> {{ risk_level }}</p>
+</div>
+{% endif %}
+
+<hr>
+
+<!-- ========================= -->
+<!-- SECTION 2: HOW IT WORKS -->
+<!-- ========================= -->
+
+<h3>How It Works</h3>
+<ul>
+    <li><strong>Problem:</strong> Early identification of students at risk of dropping out</li>
+    <li><strong>Dataset:</strong> Open University Learning Analytics Dataset (OULAD)</li>
+    <li><strong>Model:</strong> XGBoost classifier</li>
+    <li><strong>Prediction Window:</strong> First 4 weeks of LMS activity</li>
+</ul>
+
+<hr>
+
+<!-- ===================== -->
+<!-- SECTION 3: LINKS -->
+<!-- ===================== -->
+
+<h3>Project Links</h3>
+<ul>
+    <li>
+        📘 Notebook & Code:
+        <a href="https://github.com/AnupPandey04/early-student-dropout-prediction-oulad.git" target="_blank">
+            GitHub Repository
+        </a>
+    </li>
+    <li>
+        🔗 Connect with me:
+        <a href="https://www.linkedin.com/in/anup-pandey-/" target="_blank">
+            LinkedIn
+        </a>
+    </li>
+</ul>
+
+<footer>
+    <p>
+        Data Source:
+        <a href="https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset" target="_blank">
+            Open University Learning Analytics Dataset (OULAD)
+        </a>
+    </p>
+</footer>
+
+</body>
+</html>

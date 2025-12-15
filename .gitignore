@@ -2,7 +2,7 @@
 .ipynb_checkpoints/
 
 # Dataset (OULAD)
-open+university+learning+analytics+dataset/
+data/
 *.csv
 *.zip
 
