@@ -2,8 +2,14 @@
 <html>
 <head>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <title>Early Student Dropout Prediction</title>
+    <title>Early Student Dropout Prediction for Online Courses</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="Early Student Dropout Prediction for Online Courses">
+    <meta property="og:description" content="Predict early dropout risk for new students using LMS data from the first 4 weeks.">
+    <meta property="og:image" content="{{ url_for('static', filename='logo.png', _external=True) }}">
+    <meta property="og:type" content="website">
 </head>
 <body>
     <div class="container">
@@ -36,7 +42,7 @@
                 <option value="">Select Age Band</option>
                 <option value="0-35">0-35</option>
                 <option value="35-55">35-55</option>
-                <option value="55<=">55+</option>
+                <option value="55+">55+</option>
             </select>
 
             <label>Highest Education:</label>
@@ -84,7 +90,7 @@
 
         <!-- Show prediction result -->
         {% if prediction is not none %}
-        <div class="result {% if risk_level == 'High' %}high{% elif risk_level == 'Medium' %}medium{% else %}low{% endif %}">
+        <div id="result" class="result {% if risk_level == 'High' %}high{% elif risk_level == 'Medium' %}medium{% else %}low{% endif %}">
             <h3>Prediction Result</h3>
             <p><strong>Dropout Probability:</strong> {{ prediction }}</p>
             <p><strong>Risk Level:</strong> {{ risk_level }}</p>
