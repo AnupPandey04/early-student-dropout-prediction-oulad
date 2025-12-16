@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Early Student Dropout Prediction</title>
+    <title>Early Student Dropout Prediction for Online Courses</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<h1>Early Student Dropout Prediction</h1>
+<h1>Early Student Dropout Prediction for Online Courses</h1>
 
 <p>
-This tool predicts <strong>dropout risk for a new student</strong> using
-early LMS engagement data from the <strong>first 4 weeks</strong>.
+This tool predicts <strong>early dropout risk for new students in online courses</strong>
+using LMS engagement data from the <strong>first 4 weeks</strong>.
 </p>
+
 
 <form method="POST" action="/predict">
 
