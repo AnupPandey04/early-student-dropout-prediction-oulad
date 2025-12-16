@@ -46,16 +46,24 @@ early LMS engagement data from the <strong>first 4 weeks</strong>.
     <h3>Early LMS Activity (First 4 Weeks)</h3>
 
     Total Clicks:
-    <input type="number" name="total_clicks" min="0" required><br><br>
+    <input type="number" name="total_clicks" min="0" max="500" required placeholder="e.g. 50">
+    <small>Range: 0–500 (first 4 weeks)</small>
+    <br><br>
 
     Active Days:
-    <input type="number" name="active_days" min="0" required><br><br>
+    <input type="number" name="active_days" min="0" max="28" required placeholder="e.g. 10">
+    <small>Range: 0–28 days</small>
+    <br><br>
 
     Unique Activities:
-    <input type="number" name="unique_activities" min="0" required><br><br>
+    <input type="number" name="unique_activities" min="0" max="50" required placeholder="e.g. 12">
+    <small>Range: 0–50 activities</small>
+    <br><br>
 
     Avg Clicks per Day:
-    <input type="number" step="0.1" name="avg_clicks_per_day" min="0" required><br><br>
+    <input type="number" step="0.1" name="avg_clicks_per_day" min="0" max="50" required placeholder="e.g. 2.5">
+    <small>Range: 0–50</small>
+    <br><br>
 
     <button type="submit">Predict Dropout Risk</button>
 </form>

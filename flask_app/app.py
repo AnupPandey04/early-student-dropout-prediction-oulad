@@ -5,6 +5,17 @@ import os
 
 app = Flask(__name__)
 
+#Validation Helper
+def safe_number(value, min_val, max_val, cast_type=int):
+    try:
+        value = cast_type(value)
+        if value < min_val or value > max_val:
+            raise ValueError
+        return value
+    except:
+        raise ValueError(f"Value must be between {min_val} and {max_val}")
+
+
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "..", "model", "xgb_model.pkl")
@@ -22,16 +33,26 @@ def home():
 def predict():
 
     # Collect input
-    input_data = {
-        "gender": request.form["gender"],
-        "age_band": request.form["age_band"],
-        "highest_education": request.form["highest_education"],
-        "disability": request.form["disability"],
-        "total_clicks": float(request.form["total_clicks"]),
-        "active_days": int(request.form["active_days"]),
-        "unique_activities": int(request.form["unique_activities"]),
-        "avg_clicks_per_day": float(request.form["avg_clicks_per_day"])
-    }
+    try:
+        input_data = {
+            "gender": request.form["gender"],
+            "age_band": request.form["age_band"],
+            "highest_education": request.form["highest_education"],
+            "disability": request.form["disability"],
+
+            # Dataset-aware validation (OULAD – first 4 weeks)
+            "total_clicks": safe_number(request.form["total_clicks"], 0, 500, float),
+            "active_days": safe_number(request.form["active_days"], 0, 28, int),
+            "unique_activities": safe_number(request.form["unique_activities"], 0, 50, int),
+            "avg_clicks_per_day": safe_number(request.form["avg_clicks_per_day"], 0, 50, float),
+        }
+    except ValueError as e:
+        return render_template(
+            "index.html",
+            error=str(e),
+            prediction=None
+        )
+
 
     # Convert to DataFrame
     df = pd.DataFrame([input_data])
