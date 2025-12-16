@@ -2,129 +2,146 @@
 <html>
 <head>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <title>Early Student Dropout Prediction for Online Courses</title>
+    <title>Early Student Dropout Prediction</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="logo-container">
-    <img src="{{ url_for('static', filename='logo.png') }}" alt="Project Logo">
-</div>
+    <div class="container">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Project Logo">
+        </div>
 
-<h1>Early Student Dropout Prediction for Online Courses</h1>
+        <h1>Early Student Dropout Prediction for Online Courses</h1>
 
-<p>
-This tool predicts <strong>early dropout risk for new students in online courses</strong>
-using LMS engagement data from the <strong>first 4 weeks</strong>.
-</p>
+        <div class="description">
+            <p>
+                This tool predicts <strong>early dropout risk for new students</strong>
+                using LMS engagement data from the <strong>first 4 weeks</strong> of online courses.
+            </p>
+        </div>
 
+        <!-- Prediction Form -->
+        <form method="POST" action="/predict">
+            <h3>Student Information</h3>
 
-<form method="POST" action="/predict">
+            <label>Gender:</label>
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
 
-    <h3>Student Information</h3>
+            <label>Age Band:</label>
+            <select name="age_band" required>
+                <option value="">Select Age Band</option>
+                <option value="0-35">0-35</option>
+                <option value="35-55">35-55</option>
+                <option value="55<=">55+</option>
+            </select>
 
-    Gender:
-    <select name="gender" required>
-        <option value="M">Male</option>
-        <option value="F">Female</option>
-    </select><br><br>
+            <label>Highest Education:</label>
+            <select name="highest_education" required>
+                <option value="">Select Education Level</option>
+                <option value="HE Qualification">HE Qualification</option>
+                <option value="A Level or Equivalent">A Level or Equivalent</option>
+                <option value="Lower Than A Level">Lower Than A Level</option>
+            </select>
 
-    Age Band:
-    <select name="age_band" required>
-        <option value="0-35">0-35</option>
-        <option value="35-55">35-55</option>
-        <option value="55<=">55+</option>
-    </select><br><br>
+            <label>Disability:</label>
+            <select name="disability" required>
+                <option value="">Select Disability Status</option>
+                <option value="N">No</option>
+                <option value="Y">Yes</option>
+            </select>
 
-    Highest Education:
-    <select name="highest_education" required>
-        <option value="HE Qualification">HE Qualification</option>
-        <option value="A Level or Equivalent">A Level or Equivalent</option>
-        <option value="Lower Than A Level">Lower Than A Level</option>
-    </select><br><br>
+            <h3>Early LMS Activity (First 4 Weeks)</h3>
 
-    Disability:
-    <select name="disability" required>
-        <option value="N">No</option>
-        <option value="Y">Yes</option>
-    </select><br><br>
+            <label>Total Clicks:</label>
+            <input type="number" name="total_clicks" min="0" max="500" required placeholder="Enter number 0-500">
+            <small>Total clicks in first 4 weeks (0–500)</small>
 
-    <h3>Early LMS Activity (First 4 Weeks)</h3>
+            <label>Active Days:</label>
+            <input type="number" name="active_days" min="0" max="28" required placeholder="Enter number 0-28">
+            <small>Number of days active (0–28 days)</small>
 
-    Total Clicks:
-    <input type="number" name="total_clicks" min="0" max="500" required placeholder="e.g. 50">
-    <small>Range: 0–500 (first 4 weeks)</small>
-    <br><br>
+            <label>Unique Activities:</label>
+            <input type="number" name="unique_activities" min="0" max="50" required placeholder="Enter number 0-50">
+            <small>Different activities accessed (0–50 activities)</small>
 
-    Active Days:
-    <input type="number" name="active_days" min="0" max="28" required placeholder="e.g. 10">
-    <small>Range: 0–28 days</small>
-    <br><br>
+            <label>Average Clicks per Day:</label>
+            <input type="number" step="0.1" name="avg_clicks_per_day" min="0" max="50" required placeholder="Enter number 0-50">
+            <small>Average daily clicks (0–50)</small>
 
-    Unique Activities:
-    <input type="number" name="unique_activities" min="0" max="50" required placeholder="e.g. 12">
-    <small>Range: 0–50 activities</small>
-    <br><br>
+            <button type="submit">Predict Dropout Risk</button>
+        </form>
 
-    Avg Clicks per Day:
-    <input type="number" step="0.1" name="avg_clicks_per_day" min="0" max="50" required placeholder="e.g. 2.5">
-    <small>Range: 0–50</small>
-    <br><br>
+        <!-- Show error if any -->
+        {% if error %}
+        <div class="error">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        {% endif %}
 
-    <button type="submit">Predict Dropout Risk</button>
-</form>
+        <!-- Show prediction result -->
+        {% if prediction is not none %}
+        <div class="result {% if risk_level == 'High' %}high{% elif risk_level == 'Medium' %}medium{% else %}low{% endif %}">
+            <h3>Prediction Result</h3>
+            <p><strong>Dropout Probability:</strong> {{ prediction }}</p>
+            <p><strong>Risk Level:</strong> {{ risk_level }}</p>
+        </div>
+        {% endif %}
 
-{% if prediction is not none %}
-<div class="result {% if risk_level == 'High' %}high{% elif risk_level == 'Medium' %}medium{% else %}low{% endif %}" id="result">
-    <h3>Prediction Result</h3>
-    <p><strong>Dropout Probability:</strong> {{ prediction }}</p>
-    <p><strong>Risk Level:</strong> {{ risk_level }}</p>
-</div>
-{% endif %}
+        <hr>
 
-<hr>
+        <!-- How it works section -->
+        <div class="info-section">
+            <h3>How It Works</h3>
+            <ul>
+                <li><strong>Problem:</strong> Early identification of students at risk of dropping out</li>
+                <li><strong>Dataset:</strong> Open University Learning Analytics Dataset (OULAD)</li>
+                <li><strong>Model:</strong> XGBoost classifier</li>
+                <li><strong>Prediction Window:</strong> First 4 weeks of LMS activity</li>
+            </ul>
+        </div>
 
+        <hr>
 
-<h3>How It Works</h3>
-<ul>
-    <li><strong>Problem:</strong> Early identification of students at risk of dropping out</li>
-    <li><strong>Dataset:</strong> Open University Learning Analytics Dataset (OULAD)</li>
-    <li><strong>Model:</strong> XGBoost classifier</li>
-    <li><strong>Prediction Window:</strong> First 4 weeks of LMS activity</li>
-</ul>
+        <!-- Project links section -->
+        <div class="info-section">
+            <h3>Project Links</h3>
+            <ul>
+                <li>
+                    📘 Notebook & Code:
+                    <a href="https://github.com/AnupPandey04/early-student-dropout-prediction-oulad.git" target="_blank">
+                        GitHub Repository
+                    </a>
+                </li>
+                <li>
+                    🔗 Connect with me:
+                    <a href="https://www.linkedin.com/in/anup-pandey-/" target="_blank">
+                        LinkedIn
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-<hr>
+        <!-- Footer -->
+        <footer>
+            <p>
+                Data Source:
+                <a href="https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset" target="_blank">
+                    Open University Learning Analytics Dataset (OULAD)
+                </a>
+            </p>
+        </footer>
+    </div>
 
-
-<h3>Project Links</h3>
-<ul>
-    <li>
-        📘 Notebook & Code:
-        <a href="https://github.com/AnupPandey04/early-student-dropout-prediction-oulad.git" target="_blank">
-            GitHub Repository
-        </a>
-    </li>
-    <li>
-        🔗 Connect with me:
-        <a href="https://www.linkedin.com/in/anup-pandey-/" target="_blank">
-            LinkedIn
-        </a>
-    </li>
-</ul>
-
-<footer>
-    <p>
-        Data Source:
-        <a href="https://archive.ics.uci.edu/dataset/349/open+university+learning+analytics+dataset" target="_blank">
-            Open University Learning Analytics Dataset (OULAD)
-        </a>
-    </p>
-</footer>
-
-
-{% if prediction %}
-<script>
-    document.getElementById("result").scrollIntoView({ behavior: "smooth" });
-</script>
-{% endif %}
+    <!-- Scroll to result if prediction exists -->
+    {% if prediction %}
+    <script>
+        // Simple scroll to result
+        window.location.hash = 'result';
+    </script>
+    {% endif %}
 </body>
 </html>
