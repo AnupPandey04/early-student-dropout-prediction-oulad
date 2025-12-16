@@ -4,6 +4,16 @@ body {
     max-width: 700px;
 }
 
+.logo-container {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.logo-container img {
+    height: 80px;   /* ideal size */
+    width: auto;
+}
+
 h1 {
     color: #2c3e50;
 }
