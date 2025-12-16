@@ -6,10 +6,6 @@
 </head>
 <body>
 
-<!-- ===================== -->
-<!-- SECTION 1: PREDICTION -->
-<!-- ===================== -->
-
 <h1>Early Student Dropout Prediction</h1>
 
 <p>
@@ -65,7 +61,7 @@ early LMS engagement data from the <strong>first 4 weeks</strong>.
 </form>
 
 {% if prediction is not none %}
-<div class="result {% if risk_level == 'High' %}high{% elif risk_level == 'Medium' %}medium{% else %}low{% endif %}">
+<div class="result {% if risk_level == 'High' %}high{% elif risk_level == 'Medium' %}medium{% else %}low{% endif %}" id="result">
     <h3>Prediction Result</h3>
     <p><strong>Dropout Probability:</strong> {{ prediction }}</p>
     <p><strong>Risk Level:</strong> {{ risk_level }}</p>
@@ -74,9 +70,6 @@ early LMS engagement data from the <strong>first 4 weeks</strong>.
 
 <hr>
 
-<!-- ========================= -->
-<!-- SECTION 2: HOW IT WORKS -->
-<!-- ========================= -->
 
 <h3>How It Works</h3>
 <ul>
@@ -88,9 +81,6 @@ early LMS engagement data from the <strong>first 4 weeks</strong>.
 
 <hr>
 
-<!-- ===================== -->
-<!-- SECTION 3: LINKS -->
-<!-- ===================== -->
 
 <h3>Project Links</h3>
 <ul>
@@ -117,5 +107,11 @@ early LMS engagement data from the <strong>first 4 weeks</strong>.
     </p>
 </footer>
 
+
+{% if prediction %}
+<script>
+    document.getElementById("result").scrollIntoView({ behavior: "smooth" });
+</script>
+{% endif %}
 </body>
 </html>
