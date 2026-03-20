@@ -6,7 +6,7 @@ The goal is to enable **early intervention** rather than post-hoc analysis.
 ---
 
 ## 🚀 Live Demo
-🔗 **Deployed App:** https://YOUR-APP-LINK.onrender.com
+🔗 **Deployed App:** https://early-student-dropout-predictor.onrender.com/
 
 ---
 
